@@ -1,0 +1,31 @@
+<div class="collapse text-bg-dark" id="navbarHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+                <h5>About us</h5>
+                <p class="text-body-secondary">Место, где можно купить редкие и ограниченные издания игр, специальные
+                    коллекционные выпуски и эксклюзивные предметы, связанные с игровой индустрией.</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'catalog:games_list' %}" class="text-white">Main</a></li>
+                    <li><a href="{% url 'catalog:genres' %}" class="text-white">Ganres</a></li>
+                    <li><a href="{% url 'catalog:contacts' %}" class="text-white">Contacts</a></li>
+                    <li><a href="{% url 'catalog:blog_list' %}" class="text-white">Blogs</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Menu</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+                aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>

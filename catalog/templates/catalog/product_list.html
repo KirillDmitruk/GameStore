@@ -1,0 +1,38 @@
+{% extends 'catalog/base.html' %}
+{% load filter %}
+{% load media %}
+{% block content %}
+<div class="btn-group">
+    <a href="{% url 'catalog:game_create' %}"
+       class="btn btn-sm btn-outline-secondary">Добавить новую игру</a>
+</div>
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for object in object_list %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="{{ object.photo | media }}">
+                    <div class="card-body">
+                        <p class="card-text">{{ object.product_name }}</p>
+                        <p class="card-text">{{ object.price_of_product }} Руб.</p>
+                        <p class="card-text">{{ object.description | slice }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{% url 'catalog:game_detail' object.pk %}"
+                                   class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                                <a href="{% url 'catalog:game_update' object.pk %}"
+                                   class="btn btn-sm btn-outline-secondary">Изменить</a>
+                                <a href="{% url 'catalog:game_delete' object.pk %}"
+                                   class="btn btn-sm btn-outline-secondary">Удалить</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
