@@ -17,11 +17,11 @@
                         <p class="card-text">{{ object.description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a href="{% url 'catalog:blog_detail' object.pk %}"
+                                <a href="{% url 'catalog:blog_detail' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                                <a href="{% url 'catalog:blog_update' object.pk %}"
+                                <a href="{% url 'catalog:blog_update' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Изменить</a>
-                                <a href="{% url 'catalog:blog_delete' object.pk %}"
+                                <a href="{% url 'catalog:blog_delete' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Удалить</a>
                             </div>
                         </div>

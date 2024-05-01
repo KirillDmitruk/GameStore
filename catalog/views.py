@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
@@ -96,6 +97,7 @@ class BlogCreateView(CreateView):
 
 class BlogDetailView(DetailView):
     model = Blog
+    slug_field = 'slug'
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
