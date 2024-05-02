@@ -8,11 +8,13 @@ class AdminProduct(admin.ModelAdmin):
     list_display = ('id', 'product_name', 'price_of_product', 'category')
     list_filter = ('category',)
     search_fields = ('product_name', 'description')
+    prepopulated_fields = {'slug': ('product_name',)}
 
 
 @admin.register(Category)
 class AdminCategory(admin.ModelAdmin):
     list_display = ('id', 'name')
+    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Blog)

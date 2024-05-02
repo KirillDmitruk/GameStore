@@ -19,11 +19,11 @@
                         <p class="card-text">{{ object.description | slice }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a href="{% url 'catalog:game_detail' object.pk %}"
+                                <a href="{% url 'catalog:game_detail' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                                <a href="{% url 'catalog:game_update' object.pk %}"
+                                <a href="{% url 'catalog:game_update' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Изменить</a>
-                                <a href="{% url 'catalog:game_delete' object.pk %}"
+                                <a href="{% url 'catalog:game_delete' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Удалить</a>
                             </div>
 
