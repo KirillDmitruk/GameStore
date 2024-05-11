@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -18,7 +19,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    product_name = models.CharField(max_length=250, verbose_name='название продукта')
+    product_name = models.CharField(max_length=250, verbose_name='название продукта', unique=True, **NULLABLE)
     description = models.TextField(verbose_name='описание')
     photo = models.ImageField(upload_to='catalog/', **NULLABLE, verbose_name='фото')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -52,3 +53,18 @@ class Blog(models.Model):
     class Meta:
         verbose_name = 'статья'
         verbose_name_plural = 'статьи'
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, **NULLABLE, verbose_name='продукт')
+    version = models.PositiveIntegerField(verbose_name='версия')
+    title = models.CharField(max_length=150, verbose_name='название версии')
+    is_active = models.BooleanField(default=True, verbose_name='признак активной версии')
+
+    def __str__(self):
+        return f'{self.product}.'
+
+    class Meta:
+        verbose_name = 'версия продукта'
+        verbose_name_plural = 'версии продуктов'
+

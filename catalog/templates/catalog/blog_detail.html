@@ -1,8 +1,9 @@
 {% extends 'catalog/base.html' %}
-
+{% load media %}
 {% block content %}
 <div class="col-6">
     <div class="card shadow-sm">
+        <img src="{{ object.photo | media }}">
         <div class="card-body">
             <p class="card-text">Название блога: "{{ object.title }}"</p>
             <p class="card-text">Описание: {{ object.description }}</p>

@@ -1,31 +1,14 @@
-from django.shortcuts import render
+from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
 
-from catalog.models import Product, Category, Blog
+from catalog.forms import GameForm, VersionProductForm
+from catalog.models import Product, Category, Blog, Version
 
 
 class HomeListView(ListView):
     model = Product
-
-
-# def home(request):
-#     game_list = Product.objects.all()
-#     context = {
-#         'object_list': game_list,
-#         'title': 'CityGames'
-#     }
-#     return render(request, 'catalog/product_list.html', context)
-
-# def contacts(request):
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         phone = request.POST.get('phone')
-#         message = request.POST.get('message')
-#         print(f'You have new message from {name} ({phone}): {message}')
-#
-#     return render(request, 'catalog/contact_detail.html')
 
 
 class ContactDetailView(DetailView):
@@ -36,35 +19,38 @@ class GameDetailView(DetailView):
     model = Product
 
 
-# def game_detail(request, pk):
-#     context = {
-#         'object': Product.objects.get(id=pk)
-#     }
-#     return render(request, 'catalog/product_detail.html', context)
-
-
 class GenresListView(ListView):
     model = Category
 
 
-# def genres(request):
-#     genres_list = Category.objects.all()
-#     context = {
-#         'object_list': genres_list
-#     }
-#     return render(request, 'catalog/category_list.html', context)
-
-
 class GameCreateView(CreateView):
     model = Product
-    fields = ['product_name', 'description', 'photo', 'category', 'price_of_product']
+    form_class = GameForm
     success_url = reverse_lazy('catalog:games_list')
 
 
 class GameUpdateView(UpdateView):
     model = Product
-    fields = ['product_name', 'description', 'photo', 'category', 'price_of_product']
+    form_class = GameForm
     success_url = reverse_lazy('catalog:games_list')
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        SubjectFormset = inlineformset_factory(
+            Product, Version, form=VersionProductForm, extra=1)
+        if self.request.method == "POST":
+            context_data["formset"] = SubjectFormset(self.request.POST, instance=self.object)
+        else:
+            context_data["formset"] = SubjectFormset(instance=self.object)
+        return context_data
+
+    def form_valid(self, form):
+        formset = self.get_context_data()["formset"]
+        self.object = form.save()
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
+        return super().form_valid(form)
 
 
 class GameDeleteView(DeleteView):
@@ -108,9 +94,8 @@ class BlogDetailView(DetailView):
 
 class BlogUpdateView(UpdateView):
     model = Blog
+    slug_field = 'slug'
     fields = ['title', 'description', 'photo']
-
-    # success_url = reverse_lazy('catalog:blog_list')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -121,7 +106,7 @@ class BlogUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('catalog:blog_detail', kwargs={'pk': self.object.pk})
+        return reverse('catalog:blog_detail', kwargs={'slug': self.object.slug})
 
 
 class BlogDeleteView(DeleteView):
