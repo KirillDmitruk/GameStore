@@ -34,4 +34,4 @@ class GameForm(StyleFormMixin, ModelForm):
 class VersionProductForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Version
-        fields = ('is_active',)
+        fields = ('product', 'version', 'title', 'is_active')
