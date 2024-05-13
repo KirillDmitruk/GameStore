@@ -1,4 +1,3 @@
-from django.db.models import Prefetch
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -13,23 +12,8 @@ class HomeListView(ListView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-
-        # prefetch_related для оптимизации запросов к базе данных,
-        # чтобы получить все связанные объекты VersionProduct для каждого Product
-        # При помощи Prefetch (предварительная выборка):
-        # versionproduct_set - формсет модели VersionProduct
-        # queryset - набор запросов (в данном случае устанавливаем фильтр, чтобы получать
-        # только активные версии)
-
-        products_with_versions = Product.objects.prefetch_related(
-            Prefetch(
-                "versionproduct_set",
-                queryset=Version.objects.filter(is_active=True),
-            )
-        ).all()
-
-        # Добавляем эту отфильтрованную информацию в контекст
-        context_data["products_with_versions"] = products_with_versions
+        for product in context_data['object_list']:
+            product.active_version = product.version_set.filter(is_active=True).last()
         return context_data
 
 
@@ -53,7 +37,7 @@ class GameCreateView(CreateView):
     def form_valid(self, form):
         if form.is_valid():
             new_blog = form.save()
-            new_blog.slug = slugify(new_blog.title)
+            new_blog.slug = slugify(new_blog.product_name)
             new_blog.save()
 
         return super().form_valid(form)

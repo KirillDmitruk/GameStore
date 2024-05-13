@@ -26,19 +26,19 @@
                                 </a>
                             </div>
                         </div>
-                        {% if object %}
-                        <div class="col-md-6">
-                            <div class="card shadow-lg">
-                                <div class="card-body">
-                                    {{ formset.management_form }}
-                                    {% for form in formset.forms %}
-                                    {{ form.as_p }}
-                                    {% endfor %}
-                                </div>
+                    </div>
+                    {% if object %}
+                    <div class="col-md-6">
+                        <div class="card shadow-lg">
+                            <div class="card-body">
+                                {{ formset.management_form }}
+                                {% for form in formset.forms %}
+                                {{ form.as_p }}
+                                {% endfor %}
                             </div>
                         </div>
-                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
