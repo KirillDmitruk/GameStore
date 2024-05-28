@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -29,7 +30,7 @@ class GenresListView(ListView):
     model = Category
 
 
-class GameCreateView(CreateView):
+class GameCreateView(CreateView, LoginRequiredMixin):
     model = Product
     form_class = GameForm
     success_url = reverse_lazy('catalog:games_list')
@@ -43,7 +44,7 @@ class GameCreateView(CreateView):
         return super().form_valid(form)
 
 
-class GameUpdateView(UpdateView):
+class GameUpdateView(UpdateView, LoginRequiredMixin):
     model = Product
     form_class = GameForm
     success_url = reverse_lazy('catalog:games_list')
@@ -75,7 +76,7 @@ class GameUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class GameDeleteView(DeleteView):
+class GameDeleteView(DeleteView, LoginRequiredMixin):
     model = Product
     success_url = reverse_lazy('catalog:games_list')
 
@@ -89,7 +90,7 @@ class BlogListView(ListView):
         return queryset
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(CreateView, LoginRequiredMixin):
     model = Blog
     fields = ['title', 'description', 'photo']
     success_url = reverse_lazy('catalog:blog_list')
@@ -103,7 +104,7 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogDetailView(DetailView):
+class BlogDetailView(DetailView, LoginRequiredMixin):
     model = Blog
 
     def get_object(self, queryset=None):
@@ -113,7 +114,7 @@ class BlogDetailView(DetailView):
         return obj
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(UpdateView, LoginRequiredMixin):
     model = Blog
     slug_field = 'slug'
     fields = ['title', 'description', 'photo']
@@ -130,6 +131,6 @@ class BlogUpdateView(UpdateView):
         return reverse('catalog:blog_detail', kwargs={'slug': self.object.slug})
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(DeleteView, LoginRequiredMixin):
     model = Blog
     success_url = reverse_lazy('catalog:blog_list')

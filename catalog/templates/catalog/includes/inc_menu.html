@@ -13,6 +13,12 @@
                     <li><a href="{% url 'catalog:genres' %}" class="text-white">Ganres</a></li>
                     <li><a href="{% url 'catalog:contacts' %}" class="text-white">Contacts</a></li>
                     <li><a href="{% url 'catalog:blog_list' %}" class="text-white">Blog</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'users:logout' %}" class="text-white">Log out</a></li>
+                    {% else %}
+                        <li><a href="{% url 'users:login' %}" class="text-white">Log in</a></li>
+                        <li><a href="{% url 'users:register' %}" class="text-white">Register</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

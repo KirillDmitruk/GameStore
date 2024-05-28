@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.text import slugify
+
+from users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -27,6 +28,8 @@ class Product(models.Model):
     created_at = models.DateField(auto_now_add=True, verbose_name='дата создания')
     updated_at = models.DateField(auto_now=True, verbose_name='дата последнего изменения')
     slug = models.CharField(max_length=150, **NULLABLE, verbose_name='URL')
+    owner = models.ForeignKey(User, verbose_name="Владелец", help_text="Укажите владельца", **NULLABLE,
+                              on_delete=models.SET_NULL)
 
     def __str__(self):
         return (f'{self.product_name} {self.photo}'
@@ -67,4 +70,3 @@ class Version(models.Model):
     class Meta:
         verbose_name = 'версия продукта'
         verbose_name_plural = 'версии продуктов'
-
