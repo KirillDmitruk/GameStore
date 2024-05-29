@@ -41,6 +41,12 @@ class GameCreateView(CreateView, LoginRequiredMixin):
             new_blog.slug = slugify(new_blog.product_name)
             new_blog.save()
 
+        product = form.save()
+        user = self.request.user
+
+        product.owner = user
+        product.save()
+
         return super().form_valid(form)
 
 
