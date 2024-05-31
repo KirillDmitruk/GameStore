@@ -21,15 +21,17 @@
                         <p class="card-text">{{ object.price_of_product }} Руб.</p>
                         <p class="card-text">{{ object.description | slice }}</p>
                         <div class="d-flex justify-content-between align-items-center">
+
                             <div class="btn-group">
-                                <a href="{% url 'catalog:game_detail' object.slug %}"
-                                   class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                                {% if user.is_authenticated %}
+                                {% if perms.object.can_edit_is_published and perms.object.can_edit_description and
+                                perms.object.can_edit_category or user == object.owner %}
                                 <a href="{% url 'catalog:game_update' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Изменить</a>
+                                {% endif %}
+                                <a href="{% url 'catalog:game_detail' object.slug %}"
+                                   class="btn btn-sm btn-outline-secondary">Подробнее</a>
                                 <a href="{% url 'catalog:game_delete' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Удалить</a>
-                                {% endif %}
                             </div>
 
                         </div>
