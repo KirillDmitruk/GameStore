@@ -16,7 +16,8 @@ class StyleFormMixin:
 class GameForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Product
-        fields = ('product_name', 'description', 'photo', 'category', 'price_of_product', 'slug', 'owner',)
+        fields = (
+            'product_name', 'description', 'photo', 'category', 'price_of_product', 'slug', 'owner', 'is_published')
 
     def clean_product_name(self):
         product_name = self.cleaned_data.get('product_name')
@@ -29,6 +30,12 @@ class GameForm(StyleFormMixin, ModelForm):
         if description in FORBIDDEN_WORDS:
             raise ValidationError('Нельзя использовать запрещенные слова')
         return description
+
+
+class GameModeratorForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Product
+        fields = ('is_published', 'description', 'category')
 
 
 class VersionProductForm(StyleFormMixin, ModelForm):

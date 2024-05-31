@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
 
-from catalog.forms import GameForm, VersionProductForm
+from catalog.forms import GameForm, VersionProductForm, GameModeratorForm
 from catalog.models import Product, Category, Blog, Version
 
 
@@ -30,7 +31,7 @@ class GenresListView(ListView):
     model = Category
 
 
-class GameCreateView(CreateView, LoginRequiredMixin):
+class GameCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = GameForm
     success_url = reverse_lazy('catalog:games_list')
@@ -50,7 +51,7 @@ class GameCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class GameUpdateView(UpdateView, LoginRequiredMixin):
+class GameUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = GameForm
     success_url = reverse_lazy('catalog:games_list')
@@ -80,6 +81,15 @@ class GameUpdateView(UpdateView, LoginRequiredMixin):
             formset.instance = self.object
             formset.save()
         return super().form_valid(form)
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return GameForm
+        if user.has_perm('catalog.can_edit_is_published') and user.has_perm(
+                'catalog.can_edit_description') and user.has_perm('catalog.can_edit_category'):
+            return GameModeratorForm
+        raise PermissionDenied
 
 
 class GameDeleteView(DeleteView, LoginRequiredMixin):

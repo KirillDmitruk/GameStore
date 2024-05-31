@@ -31,6 +31,8 @@ class Product(models.Model):
     owner = models.ForeignKey(User, verbose_name="Владелец", help_text="Укажите владельца", **NULLABLE,
                               on_delete=models.SET_NULL)
 
+    is_published = models.BooleanField(default=False, **NULLABLE, verbose_name='is_published')
+
     def __str__(self):
         return (f'{self.product_name} {self.photo}'
                 f'{self.description} {self.price_of_product} Руб.'
@@ -39,6 +41,11 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+        permissions = [
+            ('can_edit_is_published', 'Can edit is published'),
+            ('can_edit_description', 'Can edit description'),
+            ('can_edit_category', 'Can edit category')
+        ]
 
 
 class Blog(models.Model):
