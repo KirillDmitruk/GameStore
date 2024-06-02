@@ -37,7 +37,7 @@ class ManagerRequiredMixin(DetailView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_manager:
-            return redirect('catalog:product_list')
+            return redirect('catalog:access error')
         return super().dispatch(request, *args, **kwargs)
 
 
