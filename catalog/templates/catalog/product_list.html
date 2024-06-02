@@ -23,8 +23,7 @@
                         <div class="d-flex justify-content-between align-items-center">
 
                             <div class="btn-group">
-                                {% if perms.object.can_edit_is_published and perms.object.can_edit_description and
-                                perms.object.can_edit_category or user == object.owner %}
+                                {% if perms.object.can_edit_is_published and perms.object.can_edit_description and perms.object.can_edit_category or user == object.owner %}
                                 <a href="{% url 'catalog:game_update' object.slug %}"
                                    class="btn btn-sm btn-outline-secondary">Изменить</a>
                                 {% endif %}
