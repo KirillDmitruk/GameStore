@@ -1,7 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
-from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
@@ -32,15 +31,6 @@ class GenresListView(ListView):
     model = Category
 
 
-class ManagerRequiredMixin(DetailView):
-    """Миксин проверки прав доступа к объекту, доступ только для менеджера"""
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_manager:
-            return redirect('catalog:access error')
-        return super().dispatch(request, *args, **kwargs)
-
-
 class GameCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = GameForm
@@ -61,7 +51,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class GameUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
+class GameUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = GameForm
     success_url = reverse_lazy('catalog:games_list')

@@ -11,7 +11,6 @@ class User(AbstractUser):
     phone = models.CharField(max_length=35, **NULLABLE, verbose_name='phone')
     avatar = models.ImageField(upload_to='user/', **NULLABLE, verbose_name='avatar')
     country = models.CharField(max_length=100, **NULLABLE, verbose_name='country')
-    is_manager = models.BooleanField(default=False, blank=True, null=True, verbose_name='менеджер')  # права менеджер
     token = models.CharField(max_length=100, **NULLABLE, verbose_name='token')  # 4
 
     USERNAME_FIELD = 'email'
