@@ -7,6 +7,7 @@ from pytils.translit import slugify
 
 from catalog.forms import GameForm, VersionProductForm, GameModeratorForm
 from catalog.models import Product, Category, Blog, Version
+from catalog.services import get_genres_from_cache
 
 
 class HomeListView(ListView):
@@ -29,6 +30,9 @@ class GameDetailView(DetailView):
 
 class GenresListView(ListView):
     model = Category
+
+    def get_queryset(self, *args, **kwargs):  # возвращаем кэш категорий
+        return get_genres_from_cache()
 
 
 class GameCreateView(LoginRequiredMixin, CreateView):
